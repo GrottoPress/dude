@@ -1,0 +1,21 @@
+name: dude
+version: 0.1.0
+description: A dead simple Redis cache
+
+authors:
+  - GrottoPress <info@grottopress.com>
+  - N Atta Kusi Adusei
+
+license: MIT
+
+crystal: ~> 1.0
+
+dependencies:
+  redis:
+    github: jgaskins/redis
+    version: ~> 0.6.0
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.14.3
