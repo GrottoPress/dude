@@ -105,7 +105,7 @@ struct Dude
   end
 
   def self.truncate
-    keys = redis.keys("#{key}*").map(&.to_s)
-    redis.del(keys) unless keys.empty?
+    keys = redis.keys("#{key}*")
+    redis.del(keys.map &.to_s) unless keys.empty?
   end
 end
