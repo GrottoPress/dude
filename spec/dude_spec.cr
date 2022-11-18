@@ -16,7 +16,7 @@ describe Dude do
     user_id = 2
     user = User.new(user_id)
 
-    Dude.set(user.cache_key, user, 5.seconds)
+    Dude.set(user.cache_key, user.to_json, 5.seconds)
     Dude.get(User, user.cache_key).try(&.id).should eq(user_id)
   end
 
@@ -30,7 +30,7 @@ describe Dude do
 
   it "deletes data from cache" do
     key = "key"
-    value = "22"
+    value = "value"
 
     Dude.set(key, value, nil)
     Dude.get(key).should eq(value)

@@ -22,38 +22,32 @@ struct Dude
 
   getter key : String
 
-  def initialize(key : String)
+  def initialize(key)
     @key = self.class.key(key)
   end
 
   def get(expire)
-    get.try { |value| return value }
+    get.try { |value| return value.to_s }
 
     yield.try do |block|
-      block.tap { |value| set(value, expire) }
+      block.to_json.tap { |value| set(value, expire) }
     end
   end
 
-  def get(klass : JSON::Serializable.class, expire)
-    get(expire) { yield.try(&.to_json) }.try do |value|
-      klass.from_json(value.to_s)
-    end
+  def get(klass, expire)
+    get(expire) { yield }.try { |value| klass.from_json(value) }
   end
 
   def get
     self.class.redis.get(key)
   end
 
-  def get(klass : JSON::Serializable.class)
+  def get(klass)
     get.try { |value| klass.from_json(value.to_s) }
   end
 
   def set(value, expire)
     self.class.redis.set(key, value, expire)
-  end
-
-  def set(value : JSON::Serializable, expire)
-    set(value.to_json, expire)
   end
 
   def delete
@@ -64,7 +58,7 @@ struct Dude
     new(key).get(expire) { yield }
   end
 
-  def self.get(klass : JSON::Serializable.class, key, expire)
+  def self.get(klass, key, expire)
     new(key).get(klass, expire) { yield }
   end
 
@@ -72,7 +66,7 @@ struct Dude
     new(key).get
   end
 
-  def self.get(klass : JSON::Serializable.class, key)
+  def self.get(klass, key)
     new(key).get(klass)
   end
 
