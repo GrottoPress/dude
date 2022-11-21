@@ -1,23 +1,16 @@
 require "json"
 
+require "habitat"
 require "redis"
 
 require "./dude/version"
 require "./dude/**"
 
 struct Dude
-  private module Settings
-    class_property! redis_url : String
-    class_property redis_pool_size : Int32?
-    class_property redis_key_prefix : String = "dude"
-  end
-
-  def self.settings
-    Settings
-  end
-
-  def self.configure : Nil
-    yield settings
+  Habitat.create do
+    setting redis_url : String
+    setting redis_pool_size : Int32?
+    setting redis_key_prefix : String = "dude"
   end
 
   getter key : String
