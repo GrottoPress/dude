@@ -25,8 +25,8 @@ struct Dude
     @key = self.class.key(key)
   end
 
-  def get(expire)
-    get.try { |value| return value.to_s }
+  def get(expire) : String?
+    get.try { |value| return value }
 
     yield.try do |block|
       block.to_json.tap { |value| set(value, expire) }
@@ -37,12 +37,12 @@ struct Dude
     get(expire) { yield }.try { |value| klass.from_json(value) }
   end
 
-  def get
-    self.class.redis.get(key)
+  def get : String?
+    self.class.redis.get(key).try &.as(String)
   end
 
   def get(klass)
-    get.try { |value| klass.from_json(value.to_s) }
+    get.try { |value| klass.from_json(value) }
   end
 
   def set(value, expire)
