@@ -8,7 +8,6 @@ require "./dude/**"
 struct Dude
   private module Settings
     class_property! redis_url : String
-    class_property redis_pool_size : Int32?
     class_property redis_key_prefix : String = "dude"
   end
 
@@ -79,15 +78,7 @@ struct Dude
   end
 
   def self.redis
-    @@redis ||= begin
-      uri = URI.parse(settings.redis_url)
-
-      settings.redis_pool_size.try do |size|
-        uri.query_params["max_idle_pool_size"] = size.to_s
-      end
-
-      Redis::Client.new(uri)
-    end
+    @@redis ||= Redis::Client.new(URI.parse settings.redis_url)
   end
 
   def self.key : String

@@ -24,8 +24,7 @@
    require "dude"
 
    Dude.configure do |settings|
-     settings.redis_pool_size = 25
-     settings.redis_url = "redis://localhost:6379/0"
+     settings.redis_url = "redis://localhost:6379/0?initial_pool_size=5&max_idle_pool_size=10"
      settings.redis_key_prefix = "dude"
    end
 
