@@ -45,12 +45,14 @@ struct Dude
     get.try { |value| klass.from_json(value) }
   end
 
-  def set(value, expire)
-    self.class.redis.set(key, value, expire)
+  def set(value, expire, redis = nil)
+    redis ||= self.class.redis
+    redis.set(key, value, expire)
   end
 
-  def delete
-    self.class.redis.del(key)
+  def delete(redis = nil)
+    redis ||= self.class.redis
+    redis.del(key)
   end
 
   def self.get(key, expire)
@@ -69,12 +71,12 @@ struct Dude
     new(key).get(klass)
   end
 
-  def self.set(key, value, expire)
-    new(key).set(value, expire)
+  def self.set(key, value, expire, redis = nil)
+    new(key).set(value, expire, redis)
   end
 
-  def self.delete(key)
-    new(key).delete
+  def self.delete(key, redis = nil)
+    new(key).delete(redis)
   end
 
   def self.redis
