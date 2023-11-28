@@ -13,7 +13,7 @@ crystal: ~> 1.0
 dependencies:
   redis:
     github: jgaskins/redis
-    version: ~> 0.7.0
+    version: ~> 0.8.0
 
 development_dependencies:
   ameba:
