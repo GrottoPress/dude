@@ -1,11 +1,11 @@
 require "spec"
 
-require "../src/dude"
+require "../src/redis"
 
 Dude.configure do |settings|
-  settings.redis_url = ENV["REDIS_URL"]
+  settings.store = Dude::Redis.new(ENV["REDIS_URL"])
 end
 
-Spec.before_each { Dude.truncate }
+Spec.before_each { Dude.settings.store.truncate }
 
-Spec.after_suite { Dude.truncate }
+Spec.after_suite { Dude.settings.store.truncate }

@@ -1,6 +1,6 @@
 # Dude
 
-**Dude** is a dead simple Redis cache.
+**Dude** is a dead simple Redis cache that supports multiple storage backends.
 
 ## Installation
 
@@ -10,26 +10,32 @@
    dependencies:
      dude:
        github: GrottoPress/dude
+   #redis: # Uncomment if using the Redis backend
+   #  github: jgaskins/redis
    ```
 
 1. Run `shards update`
 
 1. Require and configure *Dude*:
 
-   ```crystal
-   # ->>> src/app/config.cr
+   - Using the Redis backend
 
-   # ...
+     ```crystal
+     # ->>> src/app/config.cr
 
-   require "dude"
+     # ...
 
-   Dude.configure do |settings|
-     settings.redis_url = "redis://localhost:6379/0?initial_pool_size=5&max_idle_pool_size=10"
-     settings.redis_key_prefix = "dude"
-   end
+     require "dude/redis"
 
-   # ...
-   ```
+     Dude.configure do |settings|
+       settings.store = Dude::Redis.new(
+         "redis://localhost:6379/0",
+         namespace: "dude"
+       )
+     end
+
+     # ...
+     ```
 
 ## Usage
 
@@ -54,6 +60,16 @@
 
   # Sets and returns block if key not found in cache
   Dude.get(User, "key", 1.minute) { User.new(2) } # => `User(@id=2)`
+  ```
+
+- Perform multiple operations using a transaction
+
+  ```crystal
+  Dude.transaction do |store|
+    Dude.set("key_1", "value1", 1.minute, store)
+    Dude.set("key_2", "value2", 3.minutes, store)
+    Dude.delete("key_3", store)
+  end
   ```
 
 ## Development

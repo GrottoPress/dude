@@ -29,7 +29,7 @@ describe Dude do
   end
 
   it "deletes data from cache" do
-    key = "key"
+    key = :key
     value = "value"
 
     Dude.set(key, value, nil)
@@ -37,5 +37,22 @@ describe Dude do
 
     Dude.delete(key)
     Dude.get(key).should be_nil
+  end
+
+  it "supports transactions" do
+    key = :key
+    key_2 = :key2
+
+    value = "value"
+    value_2 = "value2"
+
+    Dude.transaction do |store|
+      Dude.set(key, value, nil, store)
+      Dude.set(key_2, value_2, nil, store)
+      Dude.delete(:key_3, store)
+    end
+
+    Dude.get(key).should eq(value)
+    Dude.get(key_2).should eq(value_2)
   end
 end

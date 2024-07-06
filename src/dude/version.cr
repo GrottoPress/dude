@@ -1,3 +1,3 @@
-struct Dude
+module Dude
   VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
 end
