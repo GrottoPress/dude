@@ -37,6 +37,22 @@
      # ...
      ```
 
+   - Using the Memory backend
+
+     ```crystal
+     # ->>> src/app/config.cr
+
+     # ...
+
+     require "dude/memory"
+
+     Dude.configure do |settings|
+       settings.store = Dude::Memory.new
+     end
+
+     # ...
+     ```
+
 ## Usage
 
 - Fetch raw value from cache
