@@ -5,7 +5,7 @@ require "./dude/**"
 
 module Dude
   private module Settings
-    class_property! store : Store
+    class_property store : Store?
   end
 
   extend self
@@ -35,20 +35,20 @@ module Dude
   end
 
   def get(key) : String?
-    settings.store.get(key)
+    settings.store.try &.get(key)
   end
 
   def set(key, value, expire, store : Store::Transaction? = nil)
     store ||= settings.store
-    store.set(key, value, expire)
+    store.try &.set(key, value, expire)
   end
 
   def delete(key, store : Store::Transaction? = nil)
     store ||= settings.store
-    store.delete(key)
+    store.try &.delete(key)
   end
 
   def transaction(& : Store::Transaction -> _)
-    settings.store.transaction { |transaction| yield transaction }
+    settings.store.try &.transaction { |transaction| yield transaction }
   end
 end

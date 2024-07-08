@@ -53,6 +53,11 @@
      # ...
      ```
 
+   - Skip caching
+
+     You may skip caching altogether by setting `Dude.settings.store` to `nil`.
+
+
 ## Usage
 
 - Fetch raw value from cache
