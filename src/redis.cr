@@ -26,6 +26,8 @@ module Dude
 
     include Commands
 
+    getter :client
+
     def initialize(
       @client : ::Redis::Client,
       @namespace : Symbol | String = :dude
