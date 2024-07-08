@@ -5,7 +5,7 @@ module Dude
     module Commands
       macro included
         def get(key : Symbol | String) : String?
-          @cache[key(key)]?.try do |entry|
+          @data[key(key)]?.try do |entry|
             return entry.value unless entry.expired?
             delete(key)
             nil
@@ -13,11 +13,11 @@ module Dude
         end
 
         def set(key : Symbol | String, value, expire)
-          @cache[key(key)] = Entry.new(value, expire)
+          @data[key(key)] = Entry.new(value, expire)
         end
 
         def delete(key : Symbol | String)
-          @cache.delete key(key)
+          @data.delete key(key)
         end
 
         private def key(key)
@@ -28,22 +28,24 @@ module Dude
 
     include Commands
 
+    getter :data
+
     def initialize
-      @cache = Hash(String, Entry).new
+      @data = Hash(String, Entry).new
     end
 
     def transaction(& : Transaction -> _)
-      yield Transaction.new(@cache)
+      yield Transaction.new(@data)
     end
 
     def truncate
-      @cache.clear
+      @data.clear
     end
 
     class Transaction < Store::Transaction
       include Commands
 
-      def initialize(@cache : Hash(String, Entry))
+      def initialize(@data : Hash(String, Entry))
       end
     end
 
