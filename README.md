@@ -55,7 +55,7 @@
 
    - Skip caching
 
-     You may skip caching altogether by setting `Dude.settings.store` to `nil`.
+     You may disable cache altogether by setting `Dude.settings.store` to `nil`.
 
 
 ## Usage
