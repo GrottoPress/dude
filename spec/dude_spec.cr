@@ -26,6 +26,8 @@ describe Dude do
 
     value = Dude.get(User, user.cache_key, 1.second) { User.new(user_id) }
     value.try(&.id).should eq(user_id)
+
+    Dude.get(User, user.cache_key).try(&.id).should eq(user_id)
   end
 
   it "deletes data from cache" do
