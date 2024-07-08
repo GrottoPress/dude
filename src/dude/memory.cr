@@ -1,4 +1,4 @@
-require "./dude"
+require "./store"
 
 module Dude
   class Memory < Store

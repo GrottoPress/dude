@@ -44,7 +44,7 @@
 
      # ...
 
-     require "dude/memory"
+     require "dude"
 
      Dude.configure do |settings|
        settings.store = Dude::Memory.new

@@ -1,6 +1,5 @@
 require "spec"
 
-require "../src/memory"
 require "../src/redis"
 
 stores = {
