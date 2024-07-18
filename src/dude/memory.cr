@@ -1,31 +1,30 @@
 require "./store"
 
 module Dude
-  class Memory < Store
+  class Memory
     module Commands
-      macro included
-        def get(key : Symbol | String) : String?
-          @data[key(key)]?.try do |entry|
-            return entry.value unless entry.expired?
-            delete(key)
-            nil
-          end
+      def get(key : Symbol | String) : String?
+        @data[key(key)]?.try do |entry|
+          return entry.value unless entry.expired?
+          delete(key)
+          nil
         end
+      end
 
-        def set(key : Symbol | String, value, expire)
-          @data[key(key)] = Entry.new(value, expire)
-        end
+      def set(key : Symbol | String, value, expire)
+        @data[key(key)] = Entry.new(value, expire)
+      end
 
-        def delete(key : Symbol | String)
-          @data.delete key(key)
-        end
+      def delete(key : Symbol | String)
+        @data.delete key(key)
+      end
 
-        private def key(key)
-          key.to_s
-        end
+      private def key(key)
+        key.to_s
       end
     end
 
+    include Store
     include Commands
 
     getter :data
@@ -42,7 +41,8 @@ module Dude
       @data.clear
     end
 
-    class Transaction < Store::Transaction
+    class Transaction
+      include Store::Transaction
       include Commands
 
       def initialize(@data : Hash(String, Entry))

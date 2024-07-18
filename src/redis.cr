@@ -3,27 +3,26 @@ require "redis"
 require "./dude"
 
 module Dude
-  class Redis < Store
+  class Redis
     module Commands
-      macro included
-        def key : Key
-          Key.new(@namespace)
-        end
+      def key : Key
+        Key.new(@namespace)
+      end
 
-        def get(key : Symbol | String) : String?
-          @client.get(self.key.name key).try &.as(String)
-        end
+      def get(key : Symbol | String) : String?
+        @client.get(self.key.name key).try &.as(String)
+      end
 
-        def set(key : Symbol | String, value, expire)
-          @client.set self.key.name(key), value, expire
-        end
+      def set(key : Symbol | String, value, expire)
+        @client.set self.key.name(key), value, expire
+      end
 
-        def delete(key : Symbol | String)
-          @client.del self.key.name(key)
-        end
+      def delete(key : Symbol | String)
+        @client.del self.key.name(key)
       end
     end
 
+    include Store
     include Commands
 
     getter :client
@@ -53,7 +52,8 @@ module Dude
       @client.del(keys.map &.to_s) unless keys.empty?
     end
 
-    class Transaction < Store::Transaction
+    class Transaction
+      include Store::Transaction
       include Commands
 
       def initialize(

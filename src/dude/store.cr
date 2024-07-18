@@ -1,11 +1,9 @@
 module Dude
-  abstract class Store
+  module Store
     module Commands
-      macro included
-        abstract def delete(key : Symbol | String)
-        abstract def get(key : Symbol | String)
-        abstract def set(key : Symbol | String, value, expire)
-      end
+      abstract def delete(key : Symbol | String)
+      abstract def get(key : Symbol | String)
+      abstract def set(key : Symbol | String, value, expire)
     end
 
     include Commands
@@ -13,7 +11,7 @@ module Dude
     abstract def transaction(& : Transaction -> _)
     abstract def truncate
 
-    abstract class Transaction
+    module Transaction
       include Commands
     end
   end
