@@ -76,6 +76,8 @@ module Dude
     end
 
     struct Key
+      getter :namespace
+
       def initialize(@namespace : Symbol | String)
       end
 
