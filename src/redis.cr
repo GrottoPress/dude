@@ -33,12 +33,12 @@ module Dude
     )
     end
 
-    def self.new(url : String)
-      new URI.parse(url)
+    def self.new(url : String, namespace = :dude)
+      new URI.parse(url), namespace
     end
 
-    def self.new(url : URI)
-      new ::Redis::Client.new(url)
+    def self.new(url : URI, namespace = :dude)
+      new ::Redis::Client.new(url), namespace
     end
 
     def transaction(& : Transaction -> _)
@@ -62,16 +62,16 @@ module Dude
       )
       end
 
-      def self.new(url : String)
-        new URI.parse(url)
+      def self.new(url : String, namespace = :dude)
+        new URI.parse(url), namespace
       end
 
-      def self.new(url : URI)
-        new ::Redis::Connection.new(url)
+      def self.new(url : URI, namespace = :dude)
+        new ::Redis::Connection.new(url), namespace
       end
 
-      def self.new(connection : Redis::Connection)
-        new Redis::Transaction.new(connection)
+      def self.new(connection : Redis::Connection, namespace = :dude)
+        new Redis::Transaction.new(connection), namespace
       end
     end
 

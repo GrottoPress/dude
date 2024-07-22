@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Convert `abstract class`es into `modules`
 
+### Fixed
+- Fix namespace not set in `Dude::Redis.new` overloads
+
 ## [0.7.0] - 2024-07-08
 
 ### Added
