@@ -4,26 +4,7 @@ require "./dude"
 
 module Dude
   class Redis
-    module Commands
-      def key : Key
-        Key.new(@namespace)
-      end
-
-      def get(key : Symbol | String) : String?
-        @client.get(self.key.name key).try &.as(String)
-      end
-
-      def set(key : Symbol | String, value, expire)
-        @client.set self.key.name(key), value, expire
-      end
-
-      def delete(key : Symbol | String)
-        @client.del self.key.name(key)
-      end
-    end
-
     include Store
-    include Commands
 
     getter :client
 
@@ -41,9 +22,17 @@ module Dude
       new ::Redis::Client.new(url), namespace
     end
 
+    def key : Key
+      Key.new(@namespace)
+    end
+
+    def get(key : Symbol | String)
+      previous_def.first?.try(&.as String)
+    end
+
     def transaction(& : Transaction -> _)
       @client.multi do |redis|
-        yield Transaction.new(redis, @namespace)
+        yield Transaction.new(redis, key)
       end
     end
 
@@ -52,14 +41,10 @@ module Dude
       @client.del(keys.map &.to_s) unless keys.empty?
     end
 
-    class Transaction
+    struct Transaction
       include Store::Transaction
-      include Commands
 
-      def initialize(
-        @client : ::Redis::Transaction,
-        @namespace : Symbol | String = :dude
-      )
+      def initialize(@client : ::Redis::Transaction, @key : Key)
       end
 
       def self.new(url : String, namespace = :dude)
@@ -72,6 +57,18 @@ module Dude
 
       def self.new(connection : Redis::Connection, namespace = :dude)
         new Redis::Transaction.new(connection), namespace
+      end
+
+      def get(key : Symbol | String) : String?
+        @client.get(@key.name key).try &.as(String)
+      end
+
+      def set(key : Symbol | String, value, expire)
+        @client.set @key.name(key), value, expire
+      end
+
+      def delete(key : Symbol | String)
+        @client.del @key.name(key)
       end
     end
 

@@ -2,7 +2,28 @@ require "./store"
 
 module Dude
   class Memory
-    module Commands
+    include Store
+
+    getter :data
+
+    def initialize
+      @data = Hash(String, Entry).new
+    end
+
+    def transaction(& : Transaction -> _)
+      yield Transaction.new(@data)
+    end
+
+    def truncate
+      @data.clear
+    end
+
+    struct Transaction
+      include Store::Transaction
+
+      def initialize(@data : Hash(String, Entry))
+      end
+
       def get(key : Symbol | String) : String?
         @data[key(key)]?.try do |entry|
           return entry.value unless entry.expired?
@@ -21,31 +42,6 @@ module Dude
 
       private def key(key)
         key.to_s
-      end
-    end
-
-    include Store
-    include Commands
-
-    getter :data
-
-    def initialize
-      @data = Hash(String, Entry).new
-    end
-
-    def transaction(& : Transaction -> _)
-      yield Transaction.new(@data)
-    end
-
-    def truncate
-      @data.clear
-    end
-
-    class Transaction
-      include Store::Transaction
-      include Commands
-
-      def initialize(@data : Hash(String, Entry))
       end
     end
 
