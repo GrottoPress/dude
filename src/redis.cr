@@ -27,7 +27,7 @@ module Dude
     end
 
     def get(key : Symbol | String)
-      previous_def.first?.try(&.as String)
+      previous_def.first.try(&.as? String)
     end
 
     def transaction(& : Transaction -> _)
