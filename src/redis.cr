@@ -47,16 +47,16 @@ module Dude
       def initialize(@client : ::Redis::Transaction, @key : Key)
       end
 
-      def self.new(url : String, namespace = :dude)
-        new URI.parse(url), namespace
+      def self.new(url : String, key : Key)
+        new URI.parse(url), key
       end
 
-      def self.new(url : URI, namespace = :dude)
-        new ::Redis::Connection.new(url), namespace
+      def self.new(url : URI, key : Key)
+        new ::Redis::Connection.new(url), key
       end
 
-      def self.new(connection : Redis::Connection, namespace = :dude)
-        new Redis::Transaction.new(connection), namespace
+      def self.new(connection : Redis::Connection, key : Key)
+        new Redis::Transaction.new(connection), key
       end
 
       def get(key : Symbol | String) : String?
