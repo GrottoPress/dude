@@ -10,8 +10,8 @@
    dependencies:
      dude:
        github: GrottoPress/dude
-   #redis: # Uncomment if using the Redis backend
-   #  github: jgaskins/redis
+     #redis: # Uncomment if using the Redis backend
+     #  github: jgaskins/redis
    ```
 
 1. Run `shards update`
