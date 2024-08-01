@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - Remove `Dude::Store::Commands` mixin
+- Remove `Dude::Store::Transaction#get` abstract method
 
 ### Changed
 - Change `Dude::Redis::Transaction` to a `struct`
