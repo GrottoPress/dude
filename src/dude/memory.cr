@@ -10,6 +10,14 @@ module Dude
       @data = Hash(String, Entry).new
     end
 
+    def get(key : Symbol | String) : String?
+      @data[key.to_s]?.try do |entry|
+        return entry.value unless entry.expired?
+        delete(key)
+        nil
+      end
+    end
+
     def transaction(& : Transaction -> _)
       yield Transaction.new(@data)
     end
@@ -24,24 +32,12 @@ module Dude
       def initialize(@data : Hash(String, Entry))
       end
 
-      def get(key : Symbol | String) : String?
-        @data[key(key)]?.try do |entry|
-          return entry.value unless entry.expired?
-          delete(key)
-          nil
-        end
-      end
-
       def set(key : Symbol | String, value, expire)
-        @data[key(key)] = Entry.new(value, expire)
+        @data[key.to_s] = Entry.new(value, expire)
       end
 
       def delete(key : Symbol | String)
-        @data.delete key(key)
-      end
-
-      private def key(key)
-        key.to_s
+        @data.delete(key.to_s)
       end
     end
 

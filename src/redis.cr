@@ -26,8 +26,8 @@ module Dude
       Key.new(@namespace)
     end
 
-    def get(key : Symbol | String)
-      previous_def.first.try(&.as? String)
+    def get(key : Symbol | String) : String?
+      @client.get(self.key.name key).try &.as(String)
     end
 
     def transaction(& : Transaction -> _)
@@ -57,10 +57,6 @@ module Dude
 
       def self.new(connection : Redis::Connection, key : Key)
         new Redis::Transaction.new(connection), key
-      end
-
-      def get(key : Symbol | String) : String?
-        @client.get(@key.name key).try &.as(String)
       end
 
       def set(key : Symbol | String, value, expire)
