@@ -54,7 +54,7 @@ module Dude
       end
 
       def expired? : Bool
-        !!@expire.try { |expire| expire <= Time.local }
+        !!expire.try { |expire| expire <= Time.local }
       end
     end
   end
