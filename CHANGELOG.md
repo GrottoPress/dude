@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Change `Dude::Redis::Transaction` to a `struct`
 - Change `Dude::Memory::Transaction` to a `struct`
+- Allow passing in existing data when instantiating `Dude::Memory`
 
 ## [1.0.0] - 2024-07-22
 

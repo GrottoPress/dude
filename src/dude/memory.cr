@@ -6,8 +6,7 @@ module Dude
 
     getter :data
 
-    def initialize
-      @data = Hash(String, Entry).new
+    def initialize(@data = Hash(String, Entry).new)
     end
 
     def get(key : Symbol | String) : String?
