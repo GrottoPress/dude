@@ -18,7 +18,7 @@ module Dude
     end
 
     def transaction(& : Transaction -> _)
-      yield Transaction.new(@data)
+      yield Transaction.new(self)
     end
 
     def truncate
@@ -28,15 +28,15 @@ module Dude
     struct Transaction
       include Store::Transaction
 
-      def initialize(@data : Hash(String, Entry))
+      def initialize(@memory : Memory)
       end
 
       def set(key : Symbol | String, value, expire)
-        @data[key.to_s] = Entry.new(value, expire)
+        @memory.data[key.to_s] = Entry.new(value, expire)
       end
 
       def delete(key : Symbol | String)
-        @data.delete(key.to_s)
+        @memory.data.delete(key.to_s)
       end
     end
 

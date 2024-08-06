@@ -32,7 +32,7 @@ module Dude
 
     def transaction(& : Transaction -> _)
       @client.multi do |redis|
-        yield Transaction.new(redis, key)
+        yield Transaction.new(self, redis)
       end
     end
 
@@ -44,27 +44,27 @@ module Dude
     struct Transaction
       include Store::Transaction
 
-      def initialize(@client : ::Redis::Transaction, @key : Key)
+      def initialize(@redis : Redis, @client : ::Redis::Transaction)
       end
 
-      def self.new(url : String, key : Key)
-        new URI.parse(url), key
+      def self.new(redis : Redis, url : String)
+        new redis, URI.parse(url)
       end
 
-      def self.new(url : URI, key : Key)
-        new ::Redis::Connection.new(url), key
+      def self.new(redis : Redis, url : URI)
+        new redis, ::Redis::Connection.new(url)
       end
 
-      def self.new(connection : Redis::Connection, key : Key)
-        new Redis::Transaction.new(connection), key
+      def self.new(redis : Redis, connection : Redis::Connection)
+        new redis, Redis::Transaction.new(connection)
       end
 
       def set(key : Symbol | String, value, expire)
-        @client.set @key.name(key), value, expire
+        @client.set @redis.key.name(key), value, expire
       end
 
       def delete(key : Symbol | String)
-        @client.del @key.name(key)
+        @client.del @redis.key.name(key)
       end
     end
 
