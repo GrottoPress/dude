@@ -1,6 +1,10 @@
 require "./spec_helper"
 
-describe "no store" do
+describe "no store", tags: {"skip_around_each"} do
+  before_each do
+    Dude.settings.store = nil
+  end
+
   it "fetches nothing from cache" do
     key = :key
     value = "value"
