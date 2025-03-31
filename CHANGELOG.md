@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased] - 
 
 ### Changed
-- Convert `Mel::Memory` into a `struct`
-- Convert `Mel::Redis` into a `struct`
+- Convert `Dude::Memory` into a `struct`
+- Convert `Dude::Redis` into a `struct`
 
 ## [2.0.0] - 2024-08-06
 
