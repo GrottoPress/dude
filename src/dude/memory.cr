@@ -1,7 +1,7 @@
 require "./store"
 
 module Dude
-  class Memory
+  struct Memory
     include Store
 
     getter :data
