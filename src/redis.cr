@@ -3,7 +3,7 @@ require "redis"
 require "./dude"
 
 module Dude
-  class Redis
+  struct Redis
     include Store
 
     getter :client
