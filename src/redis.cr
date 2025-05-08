@@ -60,7 +60,7 @@ module Dude
       end
 
       def set(key : Symbol | String, value, expire)
-        @client.set @redis.key.name(key), value, expire
+        @client.set @redis.key.name(key), value, ex: expire
       end
 
       def delete(key : Symbol | String)
