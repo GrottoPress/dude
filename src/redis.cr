@@ -37,7 +37,7 @@ module Dude
     end
 
     private def with_transaction(&)
-      with_connection &.multi(0) { |transaction| yield transaction }
+      with_connection &.multi { |transaction| yield transaction }
     end
 
     private def with_connection(&)
