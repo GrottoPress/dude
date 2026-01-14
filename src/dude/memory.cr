@@ -26,7 +26,7 @@ module Dude
     end
 
     struct Transaction
-      include Store::Transaction
+      include Dude::Transaction
 
       def initialize(@memory : Memory)
       end

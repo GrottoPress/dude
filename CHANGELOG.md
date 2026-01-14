@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Bump minimum required Crystal version to 1.4
+- Deprecate `Dude::Store::Transaction` module in favour of `Dude::Transaction`
 
 ## [3.0.2] - 2025-06-06
 

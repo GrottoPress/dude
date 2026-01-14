@@ -38,17 +38,17 @@ module Dude
     settings.store.try &.get(key)
   end
 
-  def set(key, value, expire, store : Store::Transaction? = nil)
+  def set(key, value, expire, store : Transaction? = nil)
     store ||= settings.store
     store.try &.set(key, value, expire)
   end
 
-  def delete(key, store : Store::Transaction? = nil)
+  def delete(key, store : Transaction? = nil)
     store ||= settings.store
     store.try &.delete(key)
   end
 
-  def transaction(& : Store::Transaction -> _)
+  def transaction(& : Transaction -> _)
     settings.store.try &.transaction { |transaction| yield transaction }
   end
 end

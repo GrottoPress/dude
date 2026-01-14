@@ -1,7 +1,12 @@
 module Dude
+  module Transaction
+    abstract def delete(key : Symbol | String)
+    abstract def set(key : Symbol | String, value, expire)
+  end
+
   module Store
     abstract def get(key : Symbol | String)
-    abstract def transaction(& : Transaction -> _)
+    abstract def transaction(& : Dude::Transaction -> _)
     abstract def truncate
 
     macro included
@@ -15,8 +20,12 @@ module Dude
     end
 
     module Transaction
-      abstract def delete(key : Symbol | String)
-      abstract def set(key : Symbol | String, value, expire)
+      macro included
+        {% puts "Dude::Store::Transaction is deprecated. \
+          Use Dude::Transaction instead" %}
+      end
+
+      include Dude::Transaction
     end
   end
 end

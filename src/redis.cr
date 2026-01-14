@@ -60,7 +60,7 @@ module Dude
     end
 
     struct Transaction
-      include Store::Transaction
+      include Dude::Transaction
 
       def initialize(@redis : Redis, @transaction : ::Redis::Transaction)
       end

@@ -70,7 +70,7 @@ module Dude
     end
 
     struct Transaction
-      include Store::Transaction
+      include Dude::Transaction
 
       def initialize(@postgres : Postgres, @connection : DB::Connection)
       end
