@@ -56,7 +56,7 @@ jobs:
           key: ${{ runner.os }}-shards-${{ hashFiles('shard.yml') }}
           restore-keys: ${{ runner.os }}-shards-
       - name: Install shards
-        run: shards update --skip-postinstall
+        run: shards update --skip-postinstall --skip-executables
       - name: Install Redis
         run: sudo apt -y install redis
       - name: Start Redis
