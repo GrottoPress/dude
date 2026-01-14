@@ -13,7 +13,7 @@ crystal: ~> 1.4
 development_dependencies:
   ameba:
     github: crystal-ameba/ameba
-    version: ~> 0.14.3
+    version: ~> 1.5.0
   pg:
     github: will/crystal-pg
     version: ~> 0.29.0

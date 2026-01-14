@@ -14,15 +14,15 @@ module Dude
     Settings
   end
 
-  def configure : Nil
+  def configure(&) : Nil
     yield settings
   end
 
-  def get(klass, key, expire)
+  def get(klass, key, expire, &)
     get(key, expire) { yield }.try { |value| klass.from_json(value) }
   end
 
-  def get(key, expire) : String?
+  def get(key, expire, &) : String?
     get(key).try { |value| return value }
 
     yield.try do |block|
