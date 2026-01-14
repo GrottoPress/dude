@@ -12,6 +12,8 @@
        github: GrottoPress/dude
      #redis: # Uncomment if using the Redis backend
      #  github: jgaskins/redis
+     #pg: # Uncomment if using the Posgres backend
+     #  github: will/crystal-pg
    ```
 
 1. Run `shards update`
@@ -33,6 +35,37 @@
          namespace: "dude"
        )
      end
+
+     # ...
+     ```
+
+   - Using the Postgres backend
+
+     ```crystal
+     # ->>> src/app/config.cr
+
+     # ...
+
+     require "dude/postgres"
+
+     db_url = "postgres://username:password@localhost:5432/database_name"
+
+     # Create database if not already created
+     #Dude::Postgres.create_database(db_url)
+
+     Dude.configure do |settings|
+       # ...
+       settings.store = Dude::Postgres.new(db_url, namespace: "dude")
+       # OR pass an existing `DB::Database` instance
+       #settings.store = Dude::Postgres.new(db, namespace: "dude")
+       # ...
+     end
+
+     # You may use this in your app's migrations to migrate
+     Dude.settings.store.as(Dude::Postgres).migrate_database
+
+     # You may use this in your app's migrations to roll back
+     #Dude.settings.store.as(Dude::Postgres).rollback_database
 
      # ...
      ```
@@ -98,8 +131,10 @@
 Create a `.env.sh` file:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
+export COCKROACH_URL='postgres://root@localhost:26257/dude_spec?sslmode=disable'
+export POSTGRES_URL='postgres://postgres:password@localhost:5432/dude_spec'
 export REDIS_URL='redis://localhost:6379/0'
 ```
 

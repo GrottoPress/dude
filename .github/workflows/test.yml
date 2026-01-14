@@ -60,7 +60,32 @@ jobs:
         run: sudo apt -y install redis
       - name: Start Redis
         run: sudo systemctl start redis
+      - name: Install Postgresql
+        run: |
+          sudo apt update
+          sudo apt -y install postgresql
+      - name: Start Postgresql
+        run: sudo systemctl start postgresql
+      - name: Set Postgres password
+        run: >-
+          sudo -u postgres psql -c
+          "ALTER USER postgres WITH PASSWORD 'password';"
+      - name: Install CockroachDB
+        run: |
+          sudo apt update
+          sudo apt -y install tar wget
+          sudo mkdir -p /usr/local/lib/cockroach
+          wget -O cockroachdb.tgz https://binaries.cockroachdb.com/cockroach-${{ matrix.cockroachdb }}.linux-amd64.tgz
+          tar -xzf cockroachdb.tgz
+          sudo cp -f cockroach-*/cockroach /usr/local/bin/
+          sudo chmod +x /usr/local/bin/cockroach
+          sudo cp -rf cockroach-*/lib/* /usr/local/lib/cockroach/
+        working-directory: /tmp
+      - name: Start CockroachDB
+        run: cockroach start-single-node --insecure --listen-addr=localhost:36257 --sql-addr=localhost:26257 --background
       - name: Run tests
         env:
+          COCKROACH_URL: postgres://root@localhost:26257/dude_spec?sslmode=disable
+          POSTGRES_URL: postgres://postgres:password@localhost:5432/dude_spec
           REDIS_URL: redis://localhost:6379/0
         run: crystal spec --error-on-warnings
