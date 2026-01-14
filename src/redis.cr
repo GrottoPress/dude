@@ -27,24 +27,42 @@ module Dude
     end
 
     def get(key : Symbol | String) : String?
-      @client.get(self.key.name key).try &.as(String)
+      with_connection &.get(self.key.name key).try &.as(String)
     end
 
     def transaction(& : Transaction -> _)
-      @client.multi do |redis|
-        yield Transaction.new(self, redis)
+      with_transaction do |transaction|
+        yield Transaction.new(self, transaction)
+      end
+    end
+
+    private def with_transaction(&)
+      with_connection &.multi(0) { |transaction| yield transaction }
+    end
+
+    private def with_connection(&)
+      client.@pool.retry do
+        client.@pool.checkout do |connection|
+          yield connection
+        rescue error : IO::Error
+          # Triggers a retry
+          raise DB::PoolResourceLost(::Redis::Connection).new(
+            connection,
+            cause: error
+          )
+        end
       end
     end
 
     def truncate
-      keys = @client.keys("#{key.name}*")
-      @client.del(keys.map &.to_s) unless keys.empty?
+      keys = with_connection &.keys("#{key.name}*")
+      with_connection &.del(keys.map &.to_s) unless keys.empty?
     end
 
     struct Transaction
       include Store::Transaction
 
-      def initialize(@redis : Redis, @client : ::Redis::Transaction)
+      def initialize(@redis : Redis, @transaction : ::Redis::Transaction)
       end
 
       def self.new(redis : Redis, url : String)
@@ -60,11 +78,11 @@ module Dude
       end
 
       def set(key : Symbol | String, value, expire)
-        @client.set @redis.key.name(key), value, ex: expire
+        @transaction.set @redis.key.name(key), value, ex: expire
       end
 
       def delete(key : Symbol | String)
-        @client.del @redis.key.name(key)
+        @transaction.del @redis.key.name(key)
       end
     end
 
