@@ -34,7 +34,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crystal: ['1.0.0', latest]
+        cockroachdb: ['v22.2.0', latest]
+        crystal: ['1.4.0', latest]
         experimental: [false]
         include:
           - crystal: nightly
