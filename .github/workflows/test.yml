@@ -38,7 +38,8 @@ jobs:
         crystal: ['1.4.0', latest]
         experimental: [false]
         include:
-          - crystal: nightly
+          - cockroachdb: latest
+            crystal: nightly
             experimental: true
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
