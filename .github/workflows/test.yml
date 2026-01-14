@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crystal: [latest]
+        crystal: ['1.6.0']
     runs-on: ubuntu-latest
     continue-on-error: false
     steps:
@@ -56,7 +56,7 @@ jobs:
           key: ${{ runner.os }}-shards-${{ hashFiles('shard.yml') }}
           restore-keys: ${{ runner.os }}-shards-
       - name: Install shards
-        run: shards update
+        run: shards update --skip-postinstall
       - name: Install Redis
         run: sudo apt -y install redis
       - name: Start Redis
