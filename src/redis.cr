@@ -1,6 +1,7 @@
 require "redis"
 
 require "./dude"
+require "./redis/**"
 
 module Dude
   struct Redis
@@ -83,21 +84,6 @@ module Dude
 
       def delete(key : Symbol | String)
         @transaction.del @redis.key.name(key)
-      end
-    end
-
-    struct Key
-      getter :namespace
-
-      def initialize(@namespace : Symbol | String)
-      end
-
-      def name(*parts : Symbol | String) : String
-        "#{name}:#{parts.join(':', &.to_s)}"
-      end
-
-      def name : String
-        "#{@namespace}:cache"
       end
     end
   end
