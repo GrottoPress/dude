@@ -47,10 +47,7 @@ module Dude
           yield connection
         rescue error : IO::Error
           # Triggers a retry
-          raise DB::PoolResourceLost(::Redis::Connection).new(
-            connection,
-            cause: error
-          )
+          raise DB::PoolResourceLost.new(connection, cause: error)
         end
       end
     end
