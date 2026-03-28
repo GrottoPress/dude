@@ -59,7 +59,9 @@ jobs:
       - name: Install shards
         run: shards update --skip-postinstall --skip-executables
       - name: Install Redis
-        run: sudo apt -y install redis
+        run: |
+          sudo apt update
+          sudo apt -y install redis
       - name: Start Redis
         run: sudo systemctl start redis
       - name: Install Postgresql
