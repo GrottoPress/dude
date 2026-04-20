@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `default_database` parameter to `Dude::Postgres.delete_database`
 
 ### Fixed
+- Fix nested Postgres transaction errors
 - Clone URI instead of parse to improve performance
 
 ## [3.1.0] - 2026-01-15

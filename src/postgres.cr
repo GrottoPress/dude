@@ -54,8 +54,9 @@ module Dude
     end
 
     private def with_transaction(&)
-      with_connection &.transaction do |transaction|
-        yield transaction.connection
+      with_connection do |connection|
+        next yield connection if connection.@transaction
+        connection.transaction { |transaction| yield transaction.connection }
       end
     end
 
