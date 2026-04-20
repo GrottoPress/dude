@@ -51,4 +51,8 @@ module Dude
   def transaction(& : Transaction -> _)
     settings.store.try &.transaction { |transaction| yield transaction }
   end
+
+  def postgres : Dude::Postgres
+    settings.store.as(Dude::Postgres)
+  end
 end

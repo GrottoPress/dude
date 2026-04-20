@@ -54,10 +54,10 @@
      end
 
      # You may use this in your app's migrations to migrate
-     Dude.settings.store.as(Dude::Postgres).migrate_database
+     Dude.postgres.migrate_database
 
      # You may use this in your app's migrations to roll back
-     #Dude.settings.store.as(Dude::Postgres).rollback_database
+     #Dude.postgres.rollback_database
 
      # ...
      ```

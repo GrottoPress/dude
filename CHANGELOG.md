@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased] - 
 
 ### Added
+- Add `Dude.postgres` method
 - Add `default_database` parameter to `Dude::Postgres.create_database`
 - Add `default_database` parameter to `Dude::Postgres.delete_database`
 
