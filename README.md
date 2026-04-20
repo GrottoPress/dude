@@ -50,9 +50,6 @@
 
      db_url = "postgres://username:password@localhost:5432/database_name"
 
-     # Create database if not already created
-     #Dude::Postgres.create_database(db_url)
-
      Dude.configure do |settings|
        # ...
        settings.store = Dude::Postgres.new(db_url, namespace: "dude")

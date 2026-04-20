@@ -19,7 +19,8 @@ module Dude
         "#{namespace}_cache_entries"
     end
 
-    def self.new(url, namespace = :dude)
+    def self.new(url, namespace = :dude, default_database = "postgres")
+      create_database(url, default_database) if default_database
       new DB.open(url), namespace
     end
 

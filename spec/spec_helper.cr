@@ -3,9 +3,6 @@ require "spec"
 require "../src/redis"
 require "../src/postgres"
 
-Dude::Postgres.create_database(ENV["COCKROACH_URL"])
-Dude::Postgres.create_database(ENV["POSTGRES_URL"])
-
 Spec.around_each do |spec|
   next spec.run if all_tags(spec.example).includes?("skip_around_each")
 
