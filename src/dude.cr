@@ -52,6 +52,10 @@ module Dude
     settings.store.try &.transaction { |transaction| yield transaction }
   end
 
+  def memory : Dude::Memory
+    settings.store.as(Dude::Memory)
+  end
+
   def postgres : Dude::Postgres
     settings.store.as(Dude::Postgres)
   end
