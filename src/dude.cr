@@ -55,4 +55,8 @@ module Dude
   def postgres : Dude::Postgres
     settings.store.as(Dude::Postgres)
   end
+
+  def redis : Dude::Redis
+    settings.store.as(Dude::Redis)
+  end
 end
