@@ -30,10 +30,7 @@
      require "dude/redis"
 
      Dude.configure do |settings|
-       settings.store = Dude::Redis.new(
-         "redis://localhost:6379/0",
-         namespace: "dude"
-       )
+       settings.store = Dude::Redis.new(ENV["REDIS_URL"], namespace: "dude")
      end
 
      # ...
@@ -48,11 +45,9 @@
 
      require "dude/postgres"
 
-     db_url = "postgres://username:password@localhost:5432/database_name"
-
      Dude.configure do |settings|
        # ...
-       settings.store = Dude::Postgres.new(db_url, namespace: "dude")
+       settings.store = Dude::Postgres.new(ENV["DATABASE_URL"], namespace: "dude")
        # OR pass an existing `DB::Database` instance
        #settings.store = Dude::Postgres.new(db, namespace: "dude")
        # ...
