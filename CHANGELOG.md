@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased] - 
 
 ### Fixed
+- Make `Dude::Memory` fiber-safe
 - Fix potential memory leak in `Dude::Memory#truncate`
 
 ## [3.2.0] - 2026-04-20

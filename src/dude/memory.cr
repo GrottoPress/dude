@@ -6,23 +6,40 @@ module Dude
 
     getter :data
 
-    def initialize(@data = Hash(String, Entry).new)
+    def initialize(@data : Hash(String, Entry), @mutex : Mutex)
+    end
+
+    def self.new
+      data = Hash(String, Entry).new
+      mutex = Mutex.new
+
+      new(data, mutex)
     end
 
     def get(key : Symbol | String) : String?
-      @data[key.to_s]?.try do |entry|
-        return entry.value unless entry.expired?
-        delete(key)
-        nil
+      lock do
+        @data[key.to_s]?.try do |entry|
+          return entry.value unless entry.expired?
+          @data.delete(key)
+          nil
+        end
       end
     end
 
     def transaction(& : Transaction -> _)
-      yield Transaction.new(self)
+      lock do
+        yield Transaction.new(self)
+      end
     end
 
     def truncate
-      @data = Hash(String, Entry).new
+      lock do
+        @data = Hash(String, Entry).new
+      end
+    end
+
+    private def lock(&)
+      @mutex.synchronize { yield }
     end
 
     struct Transaction
