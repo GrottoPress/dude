@@ -22,7 +22,7 @@ module Dude
     end
 
     def truncate
-      @data.clear
+      @data = Hash(String, Entry).new
     end
 
     struct Transaction
