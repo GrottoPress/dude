@@ -34,7 +34,7 @@ module Dude
 
     def truncate
       lock do
-        @data = Hash(String, Entry).new
+        @data.clear
       end
     end
 
