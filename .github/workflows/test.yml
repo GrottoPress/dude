@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         crystal: ['1.6.0']
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: false
     steps:
       - name: Update APT cache
@@ -43,7 +43,7 @@ jobs:
           - cockroachdb: latest
             crystal: nightly
             experimental: true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: ${{ matrix.experimental }}
     steps:
       - name: Update APT cache
